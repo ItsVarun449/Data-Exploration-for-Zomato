@@ -67,6 +67,16 @@ SELECT * FROM
 (SELECT a.userid, a.created_date, a.product_id, b.gold_signup_date 
 FROM sales a INNER JOIN goldusers_signup b ON a.userid = b.userid AND created_date < gold_signup_date) c) d WHERE ranking = 1;
 
+-- 8. What are the total orders and amount spent for each member before they became gold a member?
+
+SELECT userid, COUNT(created_date) AS total_order_purchased, SUM(price) AS total_amt_spent FROM
+(SELECT c.* ,d.price FROM 
+(SELECT a.userid, a.created_date, a.product_id, b.gold_signup_date 
+FROM sales a INNER JOIN goldusers_signup b ON a.userid = b.userid AND created_date < gold_signup_date) c INNER JOIN product d ON c.product_id = d.product_id) e
+GROUP BY userid;
+
+
+
 
 
 
